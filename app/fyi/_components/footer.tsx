@@ -184,7 +184,7 @@ export function FyiFooter() {
               />
             </div>
           </div>
-          <p className="text-center text-[13px] leading-[1.4] font-normal whitespace-nowrap text-mira-text-meta md:text-right md:text-mira-small lg:text-mira-normal">
+          <p className="text-center text-fyi-body font-normal whitespace-nowrap text-mira-text-meta md:text-right">
             Ecosystem intelligence for digital finance.
           </p>
         </div>

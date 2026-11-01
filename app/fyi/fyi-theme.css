@@ -7,151 +7,237 @@
  * ------------------------------------------------------------------------- */
 
 :root .mira-dark {
-    color-scheme: dark;
+  color-scheme: dark;
 
-    /* Background */
-    --mira-background-page: #0c0c0f;
-    --mira-background-card: #17161b;
-    --mira-background-section: #121115;
-    --mira-background-hover: #1f1e24;
-    --mira-background-input: #1f1e24;
-    --mira-background-selected: #302862;
-    --mira-background-selected-hover: #443492;
-    --mira-background-disabled: #1f1e24;
-    --mira-background-dark: #39393c;
-    --mira-background-overlay: #1e1e1e99;
-    --mira-background-marketing: #231c19;
+  /* Background */
+  --mira-background-page: #0c0c0f;
+  --mira-background-card: #17161b;
+  --mira-background-section: #121115;
+  --mira-background-hover: #1f1e24;
+  --mira-background-input: #1f1e24;
+  --mira-background-selected: #302862;
+  --mira-background-selected-hover: #443492;
+  --mira-background-disabled: #1f1e24;
+  --mira-background-dark: #39393c;
+  --mira-background-overlay: #1e1e1e99;
+  --mira-background-marketing: #231c19;
 
-    /* Text */
-    --mira-text-heading: #fcfbfd;
-    --mira-text-body: #e6e5ea;
-    --mira-text-meta: #b0aeb4;
-    --mira-text-placeholder: #88868e;
-    --mira-text-disabled: #636267;
-    --mira-text-link: #95a7ff;
-    --mira-text-link-hover: #bfcbff;
-    --mira-text-on-dark: #ffffff;
-    --mira-text-on-primary-button: #ffffff;
-    --mira-text-on-brand-purple: #1e1e1e;
+  /* Text */
+  --mira-text-heading: #fcfbfd;
+  --mira-text-body: #e6e5ea;
+  --mira-text-meta: #b0aeb4;
+  --mira-text-placeholder: #88868e;
+  --mira-text-disabled: #636267;
+  --mira-text-link: #95a7ff;
+  --mira-text-link-hover: #bfcbff;
+  --mira-text-on-dark: #ffffff;
+  --mira-text-on-primary-button: #ffffff;
+  --mira-text-on-brand-purple: #1e1e1e;
 
-    /* Button */
-    --mira-button-primary: #4e50f6;
-    --mira-button-primary-hover: #402deb;
-    --mira-button-primary-pressed: #3413cc;
-    --mira-button-secondary: #1f1e24;
-    --mira-button-secondary-hover: #2c2a30;
-    --mira-button-secondary-pressed: #39393c;
-    --mira-button-ghost-pressed: #2c2a30;
-    --mira-button-destructive: #c4313e;
-    --mira-button-destructive-hover: #9f3138;
-    --mira-button-disabled: #1f1e24;
+  /* Button */
+  --mira-button-primary: #4e50f6;
+  --mira-button-primary-hover: #402deb;
+  --mira-button-primary-pressed: #3413cc;
+  --mira-button-secondary: #1f1e24;
+  --mira-button-secondary-hover: #2c2a30;
+  --mira-button-secondary-pressed: #39393c;
+  --mira-button-ghost-pressed: #2c2a30;
+  --mira-button-destructive: #c4313e;
+  --mira-button-destructive-hover: #9f3138;
+  --mira-button-disabled: #1f1e24;
 
-    /* Brand */
-    --mira-brand-purple: #9086f3;
-    --mira-brand-purple-light: #bab2ff;
-    --mira-brand-purple-tint: #302862;
+  /* Brand */
+  --mira-brand-purple: #9086f3;
+  --mira-brand-purple-light: #bab2ff;
+  --mira-brand-purple-tint: #302862;
 
-    /* Border */
-    --mira-border-divider: #39393c;
-    --mira-border-input: #88868e;
-    --mira-border-input-hover: #b0aeb4;
-    --mira-border-input-focus: #6574fc;
-    --mira-border-input-error: #f38585;
-    --mira-border-focus-ring: #6574fc;
-    --mira-border-ring-gap: #0c0c0f;
-    --mira-border-selected: #9086f3;
-    --mira-border-member-avatar: #e9baf9;
-    --mira-border-image: #ffffff1a;
-    --mira-border-alert-success: #2d6d3e;
-    --mira-border-alert-warning: #775728;
-    --mira-border-alert-error: #9f3138;
-    --mira-border-alert-info: #2b628d;
+  /* Border */
+  --mira-border-divider: #39393c;
+  --mira-border-input: #88868e;
+  --mira-border-input-hover: #b0aeb4;
+  --mira-border-input-focus: #6574fc;
+  --mira-border-input-error: #f38585;
+  --mira-border-focus-ring: #6574fc;
+  --mira-border-ring-gap: #0c0c0f;
+  --mira-border-selected: #9086f3;
+  --mira-border-member-avatar: #e9baf9;
+  --mira-border-image: #ffffff1a;
+  --mira-border-alert-success: #2d6d3e;
+  --mira-border-alert-warning: #775728;
+  --mira-border-alert-error: #9f3138;
+  --mira-border-alert-info: #2b628d;
 
-    /* Feedback */
-    --mira-feedback-success-background: #213a26;
-    --mira-feedback-warning-background: #3e301e;
-    --mira-feedback-error-background: #502323;
-    --mira-feedback-info-background: #203547;
+  /* Feedback */
+  --mira-feedback-success-background: #213a26;
+  --mira-feedback-warning-background: #3e301e;
+  --mira-feedback-error-background: #502323;
+  --mira-feedback-info-background: #203547;
 
-    /* Badge */
-    --mira-badge-featured-text: #e9e7ff;
-    --mira-badge-featured-background: #443492;
-    --mira-badge-members-only-text: #e9baf9;
-    --mira-badge-members-only-background: #3f1f40;
-    --mira-badge-popular-icon: #ff5921;
-    --mira-badge-popular-text: #fcfbfd;
-    --mira-badge-popular-background: #1f1e24;
-    --mira-badge-topic-text: #e6e5ea;
-    --mira-badge-topic-border: #535256;
-    --mira-badge-live-dot: #65c27c;
-    --mira-badge-live-text: #d4f4d9;
-    --mira-badge-live-background: #295233;
-    --mira-badge-success-text: #d4f4d9;
-    --mira-badge-success-background: #295233;
-    --mira-badge-warning-text: #fee6c7;
-    --mira-badge-warning-background: #594325;
-    --mira-badge-error-text: #ffe2e1;
-    --mira-badge-error-background: #752d2f;
-    --mira-badge-info-text: #d9edff;
-    --mira-badge-info-background: #284b68;
-    --mira-badge-side-event-text: #e5e1df;
-    --mira-badge-side-event-icon: #e5e1df;
-    --mira-badge-side-event-background: #231c19;
-    --mira-badge-side-event-background-hover: #362f2b;
+  /* Badge */
+  --mira-badge-featured-text: #e9e7ff;
+  --mira-badge-featured-background: #443492;
+  --mira-badge-members-only-text: #e9baf9;
+  --mira-badge-members-only-background: #3f1f40;
+  --mira-badge-popular-icon: #ff5921;
+  --mira-badge-popular-text: #fcfbfd;
+  --mira-badge-popular-background: #1f1e24;
+  --mira-badge-topic-text: #e6e5ea;
+  --mira-badge-topic-border: #535256;
+  --mira-badge-live-dot: #65c27c;
+  --mira-badge-live-text: #d4f4d9;
+  --mira-badge-live-background: #295233;
+  --mira-badge-success-text: #d4f4d9;
+  --mira-badge-success-background: #295233;
+  --mira-badge-warning-text: #fee6c7;
+  --mira-badge-warning-background: #594325;
+  --mira-badge-error-text: #ffe2e1;
+  --mira-badge-error-background: #752d2f;
+  --mira-badge-info-text: #d9edff;
+  --mira-badge-info-background: #284b68;
+  --mira-badge-side-event-text: #e5e1df;
+  --mira-badge-side-event-icon: #e5e1df;
+  --mira-badge-side-event-background: #231c19;
+  --mira-badge-side-event-background-hover: #362f2b;
 
-    /* Shadow colours */
-    --mira-shadow-ring: #ffffff14;
-    --mira-shadow-near: #00000052;
-    --mira-shadow-far: #0000003d;
-    --mira-shadow-ring-hover: #ffffff1f;
-    --mira-shadow-near-hover: #00000066;
-    --mira-shadow-far-hover: #00000052;
-    --mira-shadow-elevated: #0000007a;
+  /* Shadow colours */
+  --mira-shadow-ring: #ffffff14;
+  --mira-shadow-near: #00000052;
+  --mira-shadow-far: #0000003d;
+  --mira-shadow-ring-hover: #ffffff1f;
+  --mira-shadow-near-hover: #00000066;
+  --mira-shadow-far-hover: #00000052;
+  --mira-shadow-elevated: #0000007a;
 
-    /* Dark-only tokens (no light counterpart defined yet) */
-    --mira-illustration-plum-dark: #3f1f40;
-    --mira-illustration-plum: #734874;
-    --mira-illustration-plum-light: #deaedf;
-    --mira-illustration-orange: #ff5921;
-    --mira-illustration-orange-light: #ff8a61;
-    --mira-illustration-orange-tint: #67230d;
-    --mira-illustration-lilac: #e9baf9;
-    --mira-illustration-lilac-tint: #3f1f40;
-    --mira-feedback-success-text: #89d198;
-    --mira-feedback-warning-text: #e6b36a;
-    --mira-feedback-error-text: #fba19f;
-    --mira-feedback-info-text: #80c5fe;
+  /* Dark-only tokens (no light counterpart defined yet) */
+  --mira-illustration-plum-dark: #3f1f40;
+  --mira-illustration-plum: #734874;
+  --mira-illustration-plum-light: #deaedf;
+  --mira-illustration-orange: #ff5921;
+  --mira-illustration-orange-light: #ff8a61;
+  --mira-illustration-orange-tint: #67230d;
+  --mira-illustration-lilac: #e9baf9;
+  --mira-illustration-lilac-tint: #3f1f40;
+  --mira-feedback-success-text: #89d198;
+  --mira-feedback-warning-text: #e6b36a;
+  --mira-feedback-error-text: #fba19f;
+  --mira-feedback-info-text: #80c5fe;
 
-    /* fyi product accents — one colour family per offer (Figma card names) */
-    --fyi-reach: #9086f3;
-    --fyi-reach-number: #6a659c;
-    --fyi-gtm: #c43404;
-    --fyi-gtm-number: #7a3015;
-    --fyi-intelligence: #734874;
-    --fyi-intelligence-number: #6e3a70;
+  /* fyi product accents — one colour family per offer (Figma card names) */
+  --fyi-reach: #9086f3;
+  --fyi-reach-number: #6a659c;
+  --fyi-gtm: #c43404;
+  --fyi-gtm-number: #7a3015;
+  --fyi-intelligence: #734874;
+  --fyi-intelligence-number: #6e3a70;
+}
+
+/* ---------------------------------------------------------------------------
+ * fyi · Typography — the 8-style system (see /fyi/design).
+ *
+ * Raw responsive sizes, named after the semantic tokens (fyi/display →
+ * --fyi-display). Phone first; tablet at 48rem, desktop at 64rem — the same
+ * breakpoints as the Mira heading ramp.
+ * ------------------------------------------------------------------------- */
+:root {
+  --fyi-display: 48px;
+  --fyi-heading-section: 32px;
+  --fyi-heading-card: 28px;
+  --fyi-text-lead: 20px;
+  --fyi-text-large: 16px;
+  --fyi-text-body: 14px;
+  --fyi-text-small: 14px;
+  --fyi-text-button: 16px;
+  --fyi-text-input: 16px; /* Text Body for fields: 16px everywhere (no iOS zoom) */
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --fyi-display: 72px;
+    --fyi-heading-section: 40px;
+    --fyi-heading-card: 32px;
+    --fyi-text-lead: 28px;
+    --fyi-text-large: 18px;
+    --fyi-text-body: 16px;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    /* 96px at 1440; eases down to 64px near 1024 so four stats fit a row */
+    --fyi-display: clamp(64px, 6.667vw, 96px);
+    --fyi-heading-section: 48px;
+    --fyi-heading-card: 40px;
+    --fyi-text-lead: 32px;
+    --fyi-text-large: 20px;
+  }
 }
 
 @theme inline {
-    /* Outfit — display face, loaded in app/fyi/layout.tsx */
-    --font-fyi-display: var(--font-outfit), var(--font-montserrat), ui-sans-serif, sans-serif;
+  /* Outfit — display face, loaded in app/fyi/layout.tsx */
+  --font-fyi-display:
+    var(--font-outfit), var(--font-montserrat), ui-sans-serif, sans-serif;
 
-    --color-mira-illustration-plum-dark: var(--mira-illustration-plum-dark);
-    --color-mira-illustration-plum: var(--mira-illustration-plum);
-    --color-mira-illustration-plum-light: var(--mira-illustration-plum-light);
-    --color-mira-illustration-orange: var(--mira-illustration-orange);
-    --color-mira-illustration-orange-light: var(--mira-illustration-orange-light);
-    --color-mira-illustration-orange-tint: var(--mira-illustration-orange-tint);
-    --color-mira-illustration-lilac: var(--mira-illustration-lilac);
-    --color-mira-illustration-lilac-tint: var(--mira-illustration-lilac-tint);
-    --color-mira-feedback-success-text: var(--mira-feedback-success-text);
-    --color-mira-feedback-warning-text: var(--mira-feedback-warning-text);
-    --color-mira-feedback-error-text: var(--mira-feedback-error-text);
-    --color-mira-feedback-info-text: var(--mira-feedback-info-text);
+  /* Type tokens → text-fyi-* utilities. Tiers: display −3% / 100%,
+       headings −2% / 110%, text 0 / 140%. Display and headings carry their
+       default weight (override with font-medium / font-semibold); text
+       styles take weight from font-normal / font-bold. Pair Outfit tokens
+       with font-fyi-display. */
+  --text-fyi-display: var(--fyi-display);
+  --text-fyi-display--line-height: 1;
+  --text-fyi-display--letter-spacing: -0.03em;
+  --text-fyi-display--font-weight: 600;
 
-    --color-fyi-reach: var(--fyi-reach);
-    --color-fyi-reach-number: var(--fyi-reach-number);
-    --color-fyi-gtm: var(--fyi-gtm);
-    --color-fyi-gtm-number: var(--fyi-gtm-number);
-    --color-fyi-intelligence: var(--fyi-intelligence);
-    --color-fyi-intelligence-number: var(--fyi-intelligence-number);
+  --text-fyi-heading-section: var(--fyi-heading-section);
+  --text-fyi-heading-section--line-height: 1.1;
+  --text-fyi-heading-section--letter-spacing: -0.02em;
+  --text-fyi-heading-section--font-weight: 500;
+
+  --text-fyi-heading-card: var(--fyi-heading-card);
+  --text-fyi-heading-card--line-height: 1.1;
+  --text-fyi-heading-card--letter-spacing: -0.02em;
+  --text-fyi-heading-card--font-weight: 600;
+
+  --text-fyi-lead: var(--fyi-text-lead);
+  --text-fyi-lead--line-height: 1.4;
+  --text-fyi-lead--letter-spacing: 0em;
+
+  --text-fyi-large: var(--fyi-text-large);
+  --text-fyi-large--line-height: 1.4;
+  --text-fyi-large--letter-spacing: 0em;
+
+  --text-fyi-body: var(--fyi-text-body);
+  --text-fyi-body--line-height: 1.4;
+  --text-fyi-body--letter-spacing: 0em;
+
+  --text-fyi-input: var(--fyi-text-input);
+  --text-fyi-input--line-height: 1.4;
+  --text-fyi-input--letter-spacing: 0em;
+
+  --text-fyi-small: var(--fyi-text-small);
+  --text-fyi-small--line-height: 1.4;
+  --text-fyi-small--letter-spacing: 0em;
+
+  --text-fyi-button: var(--fyi-text-button);
+  --text-fyi-button--line-height: 1.4;
+  --text-fyi-button--letter-spacing: 0em;
+
+  --color-mira-illustration-plum-dark: var(--mira-illustration-plum-dark);
+  --color-mira-illustration-plum: var(--mira-illustration-plum);
+  --color-mira-illustration-plum-light: var(--mira-illustration-plum-light);
+  --color-mira-illustration-orange: var(--mira-illustration-orange);
+  --color-mira-illustration-orange-light: var(--mira-illustration-orange-light);
+  --color-mira-illustration-orange-tint: var(--mira-illustration-orange-tint);
+  --color-mira-illustration-lilac: var(--mira-illustration-lilac);
+  --color-mira-illustration-lilac-tint: var(--mira-illustration-lilac-tint);
+  --color-mira-feedback-success-text: var(--mira-feedback-success-text);
+  --color-mira-feedback-warning-text: var(--mira-feedback-warning-text);
+  --color-mira-feedback-error-text: var(--mira-feedback-error-text);
+  --color-mira-feedback-info-text: var(--mira-feedback-info-text);
+
+  --color-fyi-reach: var(--fyi-reach);
+  --color-fyi-reach-number: var(--fyi-reach-number);
+  --color-fyi-gtm: var(--fyi-gtm);
+  --color-fyi-gtm-number: var(--fyi-gtm-number);
+  --color-fyi-intelligence: var(--fyi-intelligence);
+  --color-fyi-intelligence-number: var(--fyi-intelligence-number);
 }

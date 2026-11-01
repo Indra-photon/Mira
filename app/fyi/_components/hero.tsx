@@ -520,7 +520,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
               <FyiButtonLink
                 href="#contact"
                 arrow={false}
-                className="h-9 px-4 text-mira-small md:h-10 md:px-5 md:text-mira-normal"
+                className="h-9 px-4 text-fyi-small md:h-10 md:px-5 md:text-fyi-button"
               >
                 Talk to us
               </FyiButtonLink>
@@ -569,7 +569,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
                 </motion.span>
               ))}
             </h1>
-            <p className="max-w-[300px] pt-8 text-mira-medium font-normal text-mira-text-on-dark md:max-w-[480px] lg:max-w-[620px] lg:text-mira-large">
+            <p className="max-w-[300px] pt-8 text-fyi-large font-normal text-mira-text-on-dark md:max-w-[480px] lg:max-w-[620px]">
               {TAGLINE.words.map((word, i) => (
                 <span key={word}>
                   <motion.span

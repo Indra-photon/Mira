@@ -13,7 +13,7 @@ export function FyiContact() {
     >
       <h2
         id="fyi-contact-heading"
-        className="text-center font-fyi-display text-[28px] leading-[1.1] font-medium tracking-[-0.02em] text-mira-text-heading md:text-[36px] lg:text-[48px]"
+        className="text-center font-fyi-display text-fyi-heading-section text-mira-text-heading"
       >
         Get in touch
       </h2>

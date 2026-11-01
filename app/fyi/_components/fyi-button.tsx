@@ -12,15 +12,21 @@ import { cn } from "@/lib/utils"
  * - reach | gtm | intelligence: 1px outline in the product accent, filling
  *   with that accent on hover (Figma: "outline iris/orange/plum (hover: fill)")
  */
-type Variant = "primary" | "reach" | "gtm" | "intelligence"
-type Size = "md" | "lg"
+export type Variant = "primary" | "reach" | "gtm" | "intelligence"
+export type Size = "md" | "lg"
+
+const outlineDisabled =
+  "disabled:border-mira-text-disabled disabled:bg-transparent disabled:text-mira-text-disabled"
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-mira-button-primary hover:bg-mira-button-primary-hover active:bg-mira-button-primary-pressed",
-  reach: "border border-fyi-reach hover:bg-fyi-reach",
-  gtm: "border border-fyi-gtm hover:bg-fyi-gtm",
-  intelligence: "border border-fyi-intelligence hover:bg-fyi-intelligence",
+    "bg-mira-button-primary hover:bg-mira-button-primary-hover active:bg-mira-button-primary-pressed disabled:bg-mira-button-disabled disabled:text-mira-text-disabled",
+  reach: cn("border border-fyi-reach hover:bg-fyi-reach", outlineDisabled),
+  gtm: cn("border border-fyi-gtm hover:bg-fyi-gtm", outlineDisabled),
+  intelligence: cn(
+    "border border-fyi-intelligence hover:bg-fyi-intelligence",
+    outlineDisabled
+  ),
 }
 
 const sizes: Record<Size, { base: string; withArrow: string }> = {
@@ -40,8 +46,10 @@ export function fyiButtonClasses({
   className?: string
 }) {
   return cn(
-    "inline-flex shrink-0 items-center justify-center gap-1 rounded-full font-mira text-mira-normal font-bold whitespace-nowrap text-mira-text-on-primary-button outline-none select-none",
+    "group inline-flex shrink-0 items-center justify-center gap-1 rounded-full font-mira text-fyi-button font-bold whitespace-nowrap text-mira-text-on-primary-button outline-none select-none",
     "transition-[background-color,scale] duration-150 ease-out focus-visible:shadow-mira-focus-ring active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100",
+    // Disabled: no hover, no press; the white arrow dims with the label.
+    "disabled:pointer-events-none",
     variants[variant],
     sizes[size].base,
     arrow && sizes[size].withArrow,
@@ -59,7 +67,7 @@ function Label({ children, arrow }: { children: ReactNode; arrow: boolean }) {
           alt=""
           width={20}
           height={20}
-          className="size-5 shrink-0"
+          className="size-5 shrink-0 group-disabled:opacity-40"
         />
       ) : null}
     </>

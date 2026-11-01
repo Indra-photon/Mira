@@ -38,7 +38,7 @@ function validate(form: HTMLFormElement): Errors {
 // Filled Mira input: Background/Input + Border/Input drawn as an inset shadow.
 // Focus swaps in Border/Input focus and adds the Mira 2px-gap focus ring.
 const control = cn(
-  "w-full min-w-0 rounded-[10px] bg-mira-background-input px-4 text-mira-normal text-mira-text-body shadow-mira-input outline-none",
+  "w-full min-w-0 rounded-[10px] bg-mira-background-input px-4 text-fyi-input text-mira-text-body shadow-mira-input outline-none",
   "transition-shadow duration-150 ease-out motion-reduce:transition-none",
   "placeholder:text-mira-text-placeholder hover:shadow-mira-input-hover",
   "aria-invalid:shadow-mira-input-error",
@@ -66,7 +66,7 @@ function Field({
     <div className={cn("flex min-w-0 flex-col gap-2.5", className)}>
       <label
         htmlFor={id}
-        className="flex gap-1.5 text-[13px] leading-[1.4] font-bold whitespace-nowrap text-mira-text-body md:text-mira-small"
+        className="flex gap-1.5 text-fyi-small font-bold whitespace-nowrap text-mira-text-body"
       >
         <span>
           {label}
@@ -80,7 +80,7 @@ function Field({
       {error ? (
         <p
           id={`${id}-error`}
-          className="-mt-1 text-[13px] leading-[1.4] text-mira-feedback-error-text md:text-mira-small"
+          className="-mt-1 text-fyi-small text-mira-feedback-error-text"
         >
           {error}
         </p>
@@ -212,7 +212,7 @@ export function FyiContactForm() {
         <p
           role="status"
           className={cn(
-            "text-mira-small font-bold text-mira-feedback-success-text max-md:order-last",
+            "text-fyi-small font-bold text-mira-feedback-success-text max-md:order-last",
             sent && "max-md:mt-4 md:mr-4"
           )}
         >

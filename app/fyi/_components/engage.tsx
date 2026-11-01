@@ -63,7 +63,7 @@ function CardNumber({
     <span
       aria-hidden
       className={cn(
-        "absolute text-[28px] leading-none font-bold whitespace-nowrap md:text-[36px] lg:text-[40px]",
+        "absolute font-fyi-display text-fyi-heading-card font-medium whitespace-nowrap",
         className
       )}
     >
@@ -75,10 +75,9 @@ function CardNumber({
 const emphasis = "font-bold text-mira-text-heading"
 
 const smallTitle =
-  "font-fyi-display text-[28px] leading-[1.05] font-semibold tracking-[-0.03em] whitespace-nowrap text-mira-text-heading md:text-[32px] lg:text-[40px]"
+  "font-fyi-display text-fyi-heading-card whitespace-nowrap text-mira-text-heading"
 
-const smallBody =
-  "text-mira-small font-normal text-mira-text-meta md:text-[15px] lg:text-mira-normal"
+const smallBody = "text-fyi-body font-normal text-mira-text-meta"
 
 export function FyiEngage() {
   return (
@@ -88,7 +87,7 @@ export function FyiEngage() {
     >
       <h2
         id="fyi-engage-heading"
-        className="font-fyi-display text-[28px] leading-[1.1] font-medium tracking-[-0.02em] text-mira-text-heading md:text-[36px] lg:text-[48px]"
+        className="font-fyi-display text-fyi-heading-section text-mira-text-heading"
       >
         Three ways to engage
       </h2>
@@ -101,10 +100,10 @@ export function FyiEngage() {
           surface="gap-10 p-7 md:gap-8 md:p-10 lg:p-12"
         >
           <div className="flex flex-col gap-8">
-            <h3 className="font-fyi-display text-[48px] leading-none font-semibold tracking-[-0.03em] whitespace-nowrap text-mira-text-heading md:text-[72px] lg:text-[96px]">
+            <h3 className="font-fyi-display text-fyi-display whitespace-nowrap text-mira-text-heading">
               Mira <span className="block text-fyi-reach">Reach</span>
             </h3>
-            <p className="text-mira-normal font-normal text-mira-text-meta md:text-mira-medium lg:max-w-[560px] lg:text-mira-large">
+            <p className="text-fyi-large font-normal text-mira-text-meta lg:max-w-[560px]">
               Get in front of 100k+ professionals via{" "}
               <strong className={emphasis}>Platform</strong> and{" "}
               <strong className={emphasis}>Publication</strong>.
@@ -182,7 +181,7 @@ export function FyiEngage() {
               />
               <span
                 aria-hidden
-                className="text-mira-small leading-normal font-normal text-mira-text-meta"
+                className="text-fyi-small font-normal text-mira-text-meta"
               >
                 ×
               </span>

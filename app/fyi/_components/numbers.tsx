@@ -126,7 +126,7 @@ export function FyiNumbers() {
       <div className="mx-auto w-full max-w-[1440px] px-6 md:px-12 lg:px-16">
         <h2
           id="fyi-numbers-heading"
-          className="text-center font-fyi-display text-[28px] leading-[1.1] font-medium tracking-[-0.02em] text-balance text-mira-text-heading md:text-[36px] lg:text-[48px]"
+          className="text-center font-fyi-display text-fyi-heading-section text-balance text-mira-text-heading"
         >
           Trusted across digital finance
         </h2>
@@ -134,7 +134,7 @@ export function FyiNumbers() {
 
       {/* Read by teams at · full-bleed logo rail */}
       <div className="flex w-full flex-col items-center gap-6 pt-12 pb-20">
-        <p className="text-center font-fyi-display text-[13px] leading-[1.4] font-medium text-mira-text-meta md:text-mira-small lg:text-mira-normal">
+        <p className="text-center text-fyi-small font-normal text-mira-text-meta">
           Read by teams at
         </p>
         <div
@@ -184,10 +184,10 @@ export function FyiNumbers() {
                     "after:pointer-events-none after:absolute after:top-0 after:left-0 after:h-px after:w-[200%] after:bg-linear-to-r after:from-transparent after:via-white/14 after:to-transparent lg:after:hidden"
                 )}
               >
-                <dt className="order-2 text-mira-small font-normal text-mira-text-meta md:text-mira-normal lg:text-mira-large">
+                <dt className="order-2 text-fyi-large font-normal text-mira-text-meta">
                   {stat.label}
                 </dt>
-                <dd className="order-1 font-fyi-display text-[40px] leading-none font-medium tracking-[-0.04em] whitespace-nowrap text-mira-text-heading md:text-[64px] lg:text-[clamp(64px,6.67vw,96px)]">
+                <dd className="order-1 font-fyi-display text-fyi-display font-medium whitespace-nowrap text-mira-text-heading tabular-nums">
                   {stat.value}
                 </dd>
               </div>
