@@ -97,7 +97,7 @@ export function FyiEngage() {
         {/* 01 · Mira Reach */}
         <Card
           className="md:col-span-2 md:min-h-[440px] lg:col-span-1 lg:row-span-2"
-          border="[--angle:135.85deg] [--edge:color-mix(in_srgb,var(--fyi-reach)_80%,transparent)] md:[--angle:146.78deg] lg:[--angle:139.71deg]"
+          border="[--angle:137.81deg] [--edge:color-mix(in_srgb,var(--fyi-reach)_80%,transparent)] md:[--angle:146.78deg] lg:[--angle:139.71deg]"
           surface="gap-10 p-7 md:gap-8 md:p-10 lg:p-12"
         >
           <div className="flex flex-col gap-8">
@@ -105,7 +105,7 @@ export function FyiEngage() {
               Mira <span className="block text-fyi-reach">Reach</span>
             </h3>
             <p className="text-mira-normal font-normal text-mira-text-meta md:text-mira-medium lg:max-w-[560px] lg:text-mira-large">
-              Get in front of 100k+ professionals in digital finance via{" "}
+              Get in front of 100k+ professionals via{" "}
               <strong className={emphasis}>Platform</strong> and{" "}
               <strong className={emphasis}>Publication</strong>.
             </p>
@@ -128,7 +128,7 @@ export function FyiEngage() {
         {/* 02 · Mira GTM */}
         <Card
           className="md:min-h-[392px] lg:min-h-0"
-          border="[--angle:142.33deg] [--edge:color-mix(in_srgb,var(--fyi-gtm)_80%,transparent)] md:[--angle:129.57deg] lg:[--angle:129.79deg]"
+          border="[--angle:142.33deg] [--edge:color-mix(in_srgb,var(--fyi-gtm)_80%,transparent)] md:[--angle:149.74deg] lg:[--angle:149.98deg]"
           surface="gap-8 p-7 md:p-8"
         >
           <div className="flex flex-col gap-4">
@@ -154,7 +154,7 @@ export function FyiEngage() {
         {/* 03 · Mira Intelligence — plum glow washing down from the top */}
         <Card
           className="md:min-h-[392px] lg:min-h-0"
-          border="[--angle:136.2deg] [--edge:color-mix(in_srgb,var(--fyi-intelligence)_90%,transparent)] md:[--angle:129.57deg] lg:[--angle:129.79deg]"
+          border="[--angle:136.2deg] [--edge:color-mix(in_srgb,var(--fyi-intelligence)_90%,transparent)] md:[--angle:149.74deg] lg:[--angle:149.98deg]"
           surface="gap-8 bg-[linear-gradient(180deg,rgba(207,95,211,0.2)_3%,rgba(16,15,18,0.2)_60%)] p-7 md:p-8"
         >
           <div className="flex flex-col gap-4">
