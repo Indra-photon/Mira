@@ -11,13 +11,7 @@ import {
 } from "motion/react"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { FyiButtonLink } from "./fyi-button"
 
@@ -25,13 +19,14 @@ import { FyiButtonLink } from "./fyi-button"
  * 01 · Hero (Figma: fyiPage-v1 › 536:2214 desktop, 536:2517 tablet,
  * 536:2820 mobile).
  *
- * - Mobile: dimmed world (70%) bleeding off the right, behind the text, with
- *   left / bottom / top-edge fades. No plane.
- * - Tablet: full-strength world behind the text, left + bottom fades, plane
- *   "on the line" inside the world.
- * - Desktop: a large world (1136×720) bleeding off the right, its point
- *   aiming left behind the tagline; the plane flies left out of the tip and
- *   the bottom 320px of the hero fades into the page.
+ * - Mobile & tablet: wordmark and tagline on top, the world tucked right under
+ *   the tagline (its empty top-left corner sits beneath the text, its filled
+ *   top-right edge clears it), bleeding off the right; the plane just out of
+ *   its point.
+ * - Desktop: the world at its full "club" size (971×616) on the right, below
+ *   the nav so Talk to us stays clear; the plane sits just under the wordmark,
+ *   flying left out of the world's point. The world is shown whole — no fade
+ *   over it.
  *
  * The illustration is the same PNG mirrored (point aims left). Its far edge is
  * a hard crop, so at every width it is anchored to bleed off the right.
@@ -46,7 +41,7 @@ import { FyiButtonLink } from "./fyi-button"
  *  100ms   nav fades down into place
  *  250ms   wordmark letters rise M → I → R → A (80ms apart), blur 10 → 0
  *  650ms   tagline words drift up one by one (35ms apart)
- * 1150ms   desktop: plane fades in at the far right, small (0.72) and
+ * 1150ms   plane fades in at the far right, small (0.72) and
  *          high, and idles with a slow bob
  * 1850ms   plane flies a curved glide to its spot by the world's point,
  *          growing to full size and banking into the turn (2.2s).
@@ -55,8 +50,8 @@ import { FyiButtonLink } from "./fyi-button"
  *          (waits for the illustration to load, up to +2.5s)
  *  ~4050ms clip removed; everything at rest
  *
- * Tablet / mobile: same text sequence, then the rip sweeps right → left on
- * its own (1.4s); the tablet plane fades in once the world is open.
+ * Every size flies the same way; the waiting spot scales with the screen —
+ * desktop 64px in / 190px up, tablet 48 / 150, mobile 24 / 110.
  * Reduced motion: everything appears in place with a short fade.
  * ───────────────────────────────────────────────────────── */
 
@@ -80,15 +75,16 @@ const STAGE = {
   settled: 6,
 }
 
+/** Layout mode by breakpoint — picks where the plane waits before it flies. */
+type Mode = "mobile" | "tablet" | "desktop"
+const MD_QUERY = "(min-width: 48rem)" // Tailwind `md`
 const LG_QUERY = "(min-width: 64rem)" // Tailwind `lg`
-
-function subscribeLg(onChange: () => void) {
-  const query = window.matchMedia(LG_QUERY)
-  query.addEventListener("change", onChange)
-  return () => query.removeEventListener("change", onChange)
-}
-const getLg = () => window.matchMedia(LG_QUERY).matches
-const getLgOnServer = () => false
+const getMode = (): Mode =>
+  window.matchMedia(LG_QUERY).matches
+    ? "desktop"
+    : window.matchMedia(MD_QUERY).matches
+      ? "tablet"
+      : "mobile"
 
 /* Nav row */
 const NAV = {
@@ -121,16 +117,21 @@ const TAGLINE = {
   spring: { type: "spring" as const, stiffness: 260, damping: 28 },
 }
 
-/* Desktop plane: where it waits, the glide it flies, how it banks */
+/* Plane (every size): where it waits, the glide it flies, how it banks */
 const PLANE = {
-  rightInset: 64, //   px from the hero's right edge while waiting
-  liftY: -190, //      px above its final spot while waiting
+  // Waiting spot (px from the hero's right edge, px above its final slot)
+  // and how far below the slot the glide dips.
+  wait: {
+    desktop: { rightInset: 64, liftY: -190, controlY: 56 },
+    tablet: { rightInset: 48, liftY: -150, controlY: 40 },
+    mobile: { rightInset: 24, liftY: -110, controlY: 28 },
+  },
   startScale: 0.72, // smaller (farther away) while waiting
   appearScale: 0.85, // pop-in scale on top of startScale
   appearSpring: { type: "spring" as const, stiffness: 200, damping: 22 },
   fade: { duration: 0.5, ease: "easeOut" as const },
   bob: { distance: 5, duration: 2.4 }, // idle float while waiting
-  curve: { controlX: 0.45, controlY: 56 }, // quadratic control: × dx, px below
+  curve: { controlX: 0.45 }, // quadratic control: × dx
   bank: { factor: 0.55, max: 16 }, // fraction of the path angle, ° clamp
   tailRatio: 0.85, //  where the tail sits along the plane's width (nose left)
 }
@@ -148,9 +149,6 @@ const TEAR = {
   spread: 0.45, //     V width at take-off, × illustration width
   samples: 16, //      points down the torn edge
   jag: [0, 10, -6, 14, -2, 9, -11, 4, -7, 12, -3, 8, -9, 5, -4, 11, 0], // px
-  sweepDuration: 1.4, // s · tablet/mobile (no plane to follow)
-  sweepApex: 0.5, //   rip point height, × illustration height
-  sweepEnd: -40, //    px · final edge, past the illustration's left side
   hidden: "inset(0px 0px 0px 100%)",
 }
 
@@ -161,7 +159,7 @@ const WORLD = {
 }
 
 type Geometry = {
-  lg: boolean
+  controlY: number
   illuLeft: number
   illuTop: number
   illuW: number
@@ -190,15 +188,16 @@ function measure(
   section: HTMLElement,
   illu: HTMLElement,
   plane: HTMLElement,
-  lg: boolean
+  mode: Mode
 ): Geometry {
+  const wait = PLANE.wait[mode]
   const s = section.getBoundingClientRect()
   const i = illu.getBoundingClientRect()
   // offset* ignore transforms, so this is the plane's resting slot.
   const planeL = plane.offsetLeft
   const planeW = plane.offsetWidth
   return {
-    lg,
+    controlY: wait.controlY,
     illuLeft: i.left - s.left,
     illuTop: i.top - s.top,
     illuW: i.width,
@@ -207,8 +206,8 @@ function measure(
     planeT: plane.offsetTop,
     planeW,
     planeH: plane.offsetHeight,
-    dx0: s.width - PLANE.rightInset - planeW - planeL,
-    dy0: PLANE.liftY,
+    dx0: s.width - wait.rightInset - planeW - planeL,
+    dy0: wait.liftY,
   }
 }
 
@@ -231,35 +230,27 @@ function applyProgress(
   withClip: boolean
 ) {
   const q = 1 - p
-  let edge: number
-  let apexY: number
+  // Quadratic Bézier from the waiting spot (dx0, dy0) to the slot (0, 0).
+  const c = { x: g.dx0 * PLANE.curve.controlX, y: g.controlY }
+  const bx = q * q * g.dx0 + 2 * q * p * c.x
+  const by = q * q * g.dy0 + 2 * q * p * c.y
+  const vx = 2 * q * (c.x - g.dx0) - 2 * p * c.x
+  const vy = 2 * q * (c.y - g.dy0) - 2 * p * c.y
+  // Nose points left, so pitch = heading − 180°. Level at both ends.
+  const heading = (Math.atan2(vy, vx) * 180) / Math.PI
+  const pitch = heading > 0 ? heading - 180 : heading + 180
+  const envelope = Math.min(1, 3 * p) * Math.min(1, 3 * q)
+  const scale = lerp(PLANE.startScale, 1, p)
 
-  if (g.lg) {
-    // Quadratic Bézier from the waiting spot (dx0, dy0) to the slot (0, 0).
-    const c = { x: g.dx0 * PLANE.curve.controlX, y: PLANE.curve.controlY }
-    const bx = q * q * g.dx0 + 2 * q * p * c.x
-    const by = q * q * g.dy0 + 2 * q * p * c.y
-    const vx = 2 * q * (c.x - g.dx0) - 2 * p * c.x
-    const vy = 2 * q * (c.y - g.dy0) - 2 * p * c.y
-    // Nose points left, so pitch = heading − 180°. Level at both ends.
-    const heading = (Math.atan2(vy, vx) * 180) / Math.PI
-    const pitch = heading > 0 ? heading - 180 : heading + 180
-    const envelope = Math.min(1, 3 * p) * Math.min(1, 3 * q)
-    const scale = lerp(PLANE.startScale, 1, p)
+  v.x.set(bx)
+  v.y.set(by)
+  v.scale.set(scale)
+  v.rotate.set(clamp(pitch * PLANE.bank.factor, PLANE.bank.max) * envelope)
 
-    v.x.set(bx)
-    v.y.set(by)
-    v.scale.set(scale)
-    v.rotate.set(clamp(pitch * PLANE.bank.factor, PLANE.bank.max) * envelope)
-
-    const tail =
-      g.planeL + bx + g.planeW * (0.5 + (PLANE.tailRatio - 0.5) * scale)
-    edge = tail - g.illuLeft + TEAR.lead * q - TEAR.endPull * p ** 4
-    apexY = g.planeT + by + g.planeH / 2 - g.illuTop
-  } else {
-    edge = lerp(g.illuW + TEAR.lead, TEAR.sweepEnd, p)
-    apexY = g.illuH * TEAR.sweepApex
-  }
+  const tail =
+    g.planeL + bx + g.planeW * (0.5 + (PLANE.tailRatio - 0.5) * scale)
+  const edge = tail - g.illuLeft + TEAR.lead * q - TEAR.endPull * p ** 4
+  const apexY = g.planeT + by + g.planeH / 2 - g.illuTop
 
   v.world.set(lerp(WORLD.startScale, 1, p))
   if (withClip) {
@@ -274,13 +265,12 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
   const [sequenceStage, setStage] = useState(STAGE.idle)
   // Reduced motion skips the sequence: everything renders at rest.
   const stage = reduceMotion ? STAGE.settled : sequenceStage
-  const isLg = useSyncExternalStore(subscribeLg, getLg, getLgOnServer)
 
   const sectionRef = useRef<HTMLElement>(null)
   const illuRef = useRef<HTMLDivElement>(null)
   const planeRef = useRef<HTMLDivElement>(null)
 
-  const lgRef = useRef(false)
+  const modeRef = useRef<Mode>("desktop")
   const dueRef = useRef(false) // flight time reached
   const readyRef = useRef(false) // illustration decoded
   const startedRef = useRef(false)
@@ -301,7 +291,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
     const illu = illuRef.current
     const plane = planeRef.current
     if (!section || !illu || !plane) return null
-    return measure(section, illu, plane, lgRef.current)
+    return measure(section, illu, plane, modeRef.current)
   }, [])
 
   const tryFly = useCallback(() => {
@@ -311,10 +301,13 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
     startedRef.current = true
     setStage(STAGE.flight)
     controlsRef.current = animate(0, 1, {
-      duration: g.lg ? FLIGHT.duration : TEAR.sweepDuration,
+      duration: FLIGHT.duration,
       ease: FLIGHT.ease,
       onUpdate: (p) => applyProgress(p, g, valuesRef.current, true),
-      onComplete: () => setStage(STAGE.settled),
+      onComplete: () => {
+        valuesRef.current.clip.set("none")
+        setStage(STAGE.settled)
+      },
     })
   }, [getGeometry])
 
@@ -325,7 +318,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
 
   useEffect(() => {
     const v = valuesRef.current
-    lgRef.current = getLg()
+    modeRef.current = getMode()
 
     // Reset (also runs on replay).
     controlsRef.current?.stop()
@@ -337,7 +330,10 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
     v.scale.set(1)
     v.world.set(1)
 
-    if (reduceMotion) return
+    if (reduceMotion) {
+      v.clip.set("none")
+      return
+    }
 
     v.world.set(WORLD.startScale)
     v.clip.set(TEAR.hidden)
@@ -349,9 +345,9 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
     timers.push(setTimeout(() => setStage(STAGE.tagline), TIMING.tagline))
     timers.push(
       setTimeout(() => {
-        // Park the desktop plane at its waiting spot before it fades in.
+        // Park the plane at its waiting spot before it fades in.
         const g = getGeometry()
-        if (g?.lg) applyProgress(0, g, v, false)
+        if (g) applyProgress(0, g, v, false)
         setStage(STAGE.plane)
       }, TIMING.planeAppear)
     )
@@ -374,27 +370,33 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
     }
   }, [reduceMotion, replayTrigger, getGeometry, tryFly])
 
-  const planeVisible = isLg ? stage >= STAGE.plane : stage >= STAGE.settled
-  const planeIdling = isLg && stage === STAGE.plane
+  const planeVisible = stage >= STAGE.plane
+  const planeIdling = stage === STAGE.plane
 
   return (
     <MotionConfig reducedMotion="user">
       <section
         ref={sectionRef}
-        className="relative isolate h-[560px] overflow-hidden md:h-[620px] lg:h-[800px]"
+        className="relative isolate h-[calc(301px_+_0.6344_*_max(440px,_130.34vw_-_135.5px))] overflow-hidden md:h-[calc(300px_+_0.6344_*_max(757px,_130.34vw_-_211.1px))] lg:h-[880px]"
       >
-        {/* World illustration (mirrored). Mobile 473×300 at -86/150, tablet
-            757×480 at 48/96. Desktop 1136×720 at 553/135 (centre-167 at
-            1440), its middle held at y=495; never closer than 471px so the
-            tip clears the tagline at 1024, and growing past 1440 so the crop
-            never shows. The rip clip lives on this unmirrored wrapper. */}
+        {/* World illustration (mirrored), always shown whole — no fades.
+            Mobile / tablet: tucked under the tagline (top 277 / 276). Point pinned at
+            x 124 / 182 via a −23.275% translate; width max(440 / 757px,
+            130.34vw − 135.5 / 211.1px) keeps the cropped far edge off-screen.
+            Desktop 971×616 at 504/226 (centre-216 at
+            1440, tip at 730/561), its middle held at y=534; never closer than
+            450px so the world and plane clear the wordmark and tagline at
+            1024, and growing past
+            1440 so the cropped far edge never shows. The rip clip lives on this unmirrored wrapper. */}
         <motion.div
           ref={illuRef}
           aria-hidden
           style={{
-            clipPath: stage >= STAGE.settled ? "none" : values.clip,
+            // Always bound to the motion value; it is set to "none" once
+            // the world is fully open (or straight away with reduced motion).
+            clipPath: values.clip,
           }}
-          className="absolute top-[150px] left-[max(-86px,calc(100%-476px))] aspect-[757/480] w-[473px] md:top-[96px] md:left-[max(48px,calc(100%-720px))] md:w-[757px] lg:top-[495px] lg:left-[max(471px,calc(50%-167px))] lg:aspect-[1136/720] lg:w-[max(1136px,calc(50%+167px))] lg:-translate-y-1/2"
+          className="absolute top-[277px] left-[124px] aspect-[971/616] w-[max(440px,_130.34vw_-_135.5px)] -translate-x-[23.275%] md:top-[276px] md:left-[182px] md:w-[max(757px,_130.34vw_-_211.1px)] lg:top-[534px] lg:left-[max(450px,calc(50%-216px))] lg:w-[max(971px,calc(50%+251px))] lg:translate-x-0 lg:-translate-y-1/2"
         >
           <motion.div
             className="absolute inset-0"
@@ -405,47 +407,19 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
               alt=""
               fill
               preload
-              sizes="(min-width: 1938px) calc(50vw + 167px), (min-width: 1024px) 1136px, (min-width: 768px) 757px, 473px"
+              sizes="(min-width: 1440px) calc(50vw + 251px), (min-width: 1024px) 971px, 130vw"
               onLoad={handleIllustrationLoad}
-              className="pointer-events-none -scale-x-100 object-cover opacity-70 md:opacity-100"
+              className="pointer-events-none -scale-x-100 object-cover"
             />
           </motion.div>
         </motion.div>
 
-        {/* Desktop · Fade · bottom into page (320px, full width) */}
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-[480px] hidden h-[320px] bg-linear-to-b from-mira-background-page/0 via-mira-background-page/85 via-70% to-mira-background-page lg:block"
-        />
-
-        {/* Mobile fades */}
-        <div
-          aria-hidden
-          className="absolute top-[148px] left-0 h-[304px] w-[280px] bg-linear-to-r from-mira-background-page via-mira-background-page/75 via-45% to-mira-background-page/0 md:hidden"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-[285px] h-[169px] bg-linear-to-b from-mira-background-page/0 via-mira-background-page/85 via-70% to-mira-background-page md:hidden"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-[148px] h-12 bg-linear-to-b from-mira-background-page/60 to-mira-background-page/0 md:hidden"
-        />
-
-        {/* Tablet fades */}
-        <div
-          aria-hidden
-          className="absolute top-[94px] left-0 hidden h-[484px] w-[560px] bg-linear-to-r from-mira-background-page via-mira-background-page/80 via-50% to-mira-background-page/0 md:block lg:hidden"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-[336px] hidden h-[244px] bg-linear-to-b from-mira-background-page/0 via-mira-background-page/85 via-75% to-mira-background-page md:block lg:hidden"
-        />
-
-        {/* Plane. Tablet: 100w, mirrored, riding with the world. Desktop: 190w
-            at 602/483, nose left, just out of the world's point — kept 49px
-            right of the illustration so the tip-to-plane gap stays fixed at
-            every width. The CSS sets its resting slot; the flight moves it
+        {/* Plane, nose left, just out of the world's point. Mobile 90w at
+            x 24, tablet 120w at x 48; their top tracks the world's point
+            (world top + 34.5% of its width − half the plane). Desktop: 170w
+            at 541/529 (just under the wordmark), nose left, 19px short of the world's point. Its left
+            edge is derived from the world's left + its tip (23.275% of the
+            world's width) − 189px, so the gap holds at every width. The CSS sets its resting slot; the flight moves it
             with x / y / rotate / scale offsets that end at zero. */}
         <motion.div
           ref={planeRef}
@@ -459,7 +433,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
             rotate: values.rotate,
             scale: values.scale,
           }}
-          className="absolute hidden aspect-[122/45.217] -scale-x-100 md:top-[338px] md:left-[max(590px,calc(100%-178px))] md:block md:w-[100px] lg:top-[483px] lg:left-[max(520px,calc(50%-118px))] lg:w-[190px] lg:scale-x-100"
+          className="absolute top-[calc(260.3px_+_0.345_*_max(440px,_130.34vw_-_135.5px))] left-[24px] aspect-[122/45.217] w-[90px] md:top-[calc(253.76px_+_0.345_*_max(757px,_130.34vw_-_211.1px))] md:left-[48px] md:w-[120px] lg:top-[529px] lg:left-[calc(max(450px,50%_-_216px)_+_max(226px,(50%_+_251px)*0.23275)_-_189px)] lg:w-[170px]"
         >
           <motion.div
             className="absolute inset-[0_0.12%_1.31%_0]"
@@ -528,7 +502,7 @@ export function FyiHero({ replayTrigger = 0 }: { replayTrigger?: number }) {
           </motion.header>
 
           {/* Message: wordmark (h1) + tagline */}
-          <div className="px-6 pt-[141px] md:px-12 md:pt-[169px] lg:px-16 lg:pt-[258px]">
+          <div className="px-6 pt-12 md:px-12 md:pt-20 lg:px-16 lg:pt-[290px]">
             <h1 className="relative aspect-[560/143.267] w-[220px] md:w-[250px] lg:w-[560px]">
               <span className="sr-only">Mira</span>
               {WORDMARK.slices.map((slice, i) => (
