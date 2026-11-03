@@ -18,7 +18,8 @@ the agreed design and the setup checklist. Read them in order.
 - Site: https://www.craftui.space, repo `craftUI012/craftUI-Pro`, Next.js 16.2 with fumadocs-mdx.
 - Sitemap and robots already exist and the site is indexed.
 - PostHog: US cloud.
-- Search Console property: to confirm (domain property `sc-domain:craftui.space` or URL-prefix `https://www.craftui.space/`).
+- Search Console property: `sc-domain:craftui.space` (Domain property, confirmed).
+- Current search traffic is small (last 28 days: 16 clicks, 82 impressions, top queries are brand terms). GSC-based opportunities will be thin at first; persona research (Phase 2) carries most of the early demand discovery.
 - Target market for search data: to confirm (default United States, English).
 
 ## Decisions already made
